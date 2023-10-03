@@ -519,16 +519,18 @@ function mapplot(desease){
 
     function drawRegionsMap() {
     var data = google.visualization.arrayToDataTable([
+      
         ['State', '% mean of desease'],
         ['US-CA', total_cal/CA.length],
         ['US-TX', total_ny/NY.length],
         ['US-NY', total_tx/TX.length],
 
+
     ]);
 
     var options = {
         region:'US',
-        displayMode:'states',
+        dataMode:'markers',
         resolution:'provinces'
     };
 
