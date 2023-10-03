@@ -7,6 +7,23 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Proyect 3 </title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <!-- Leaflet CSS -->
+  <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin="" /> -->
+
+  <!-- Leaflet JavaScript code -->
+  <!-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script> -->
+
+  <!-- Our CSS -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <!-- Google Chart JS Library -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 </head>
 
 <body>
@@ -61,10 +78,19 @@
 
       <div class="col-md-7">
         <div class="well">
-          <h5> The propousal of this project is ....</h5>
-          <h5> The data source is from ....</h5>
-          <h5> we have selected this three states because ...</h5>
-
+          <h4> Aim of the Project: </h4>
+          <h5> This project is to uncover pattern of disease incidences in certain locations within 3 states of the United States (California, Texas, New York). 
+            Some of the disease incidences that we investigated are Arthritis, cancer, obesity, smoking, asthma, high blood pressure, and diabetes. 
+            The rationale behind the choice of states is based upon population size and location in the Country. 
+            California from the west, Texas from the central and New York from the east.</h4> 
+          <h4> Data Collection:</h4>
+          <h5> We pulled our data from the CDC website, and the data was filtered according to the aim of the project.
+               The dataset contains 177 unique observations.</h5>
+          <h4> Procedure and methodology:</h4>
+          <h5> Our dataset will be stored in mongo DB database and will be pulled with python Flasked-powered API. HTML, /CSS, JavaScript will be the libraries used in our data analysis and visualizations.
+              Also, we use he JS Library of GoogleChart to show the map of USA with the differents state that we considerer
+          </h5>      
+          
         </div>
       </div>
 
@@ -72,16 +98,16 @@
 
     <div class="row">
       
-      <div class="col-md-6 text-center">
+      <div class="col-md-6 text-left">
         <div class="well">
-          <h5> Graph Number 1</h5>
+          <h5> Worst 5 cities of the state</h5>
         </div>
         <div id="bar1"></div>
       </div>
 
       <div class="col-md-6 text-center">
         <div class="well">
-          <h5> Graph Number 2</h5>
+          <h5> Mean of the Desease per State</h5>
         </div>
         <div id="bar2"></div>
       </div>
@@ -90,36 +116,35 @@
     <div class="row">  
       <div class="col-md-12 text-center">
         <div class="well">
-          <h5> Graph Number 3</h5>
+          <h5> Resume Data per State per Diseases</h5>
         </div>
         <div id="bubble"></div>
       </div>
     </div>
 
+    <div class="row">  
+      <br>
+    </div>
+
     <div class="row">
-      <div class="col-md-12 text-center">
+      <br>
+
+      <div class="col-md-12 text-center" >
         <div class="well">
-          <h5> Map</h5>
+          <h5> Resume Data per State per Diseases</h5>
         </div>
         <div id="map"></div>
       </div>
-
     </div>
 
   </div>
 
-   <!-- Leaflet JS -->
-   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-   crossorigin=""></script>
   <!-- D3 JavaScript -->
- 
-  <!-- Our JavaScript -->
-  <!-- <script type="text/javascript" src="static/js/logic.js"></script> -->
-
-  
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- Plotly JavaScript -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Our JavaScript -->
   <script src="prueba.js"></script>
+
 </body>
 </html>

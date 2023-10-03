@@ -22,7 +22,7 @@ d3.json(url).then((data)=>{
         bubblegraph("california","arthritis");
         bargraph1("california","arthritis");
         bargraph2("arthritis");
-        
+        mapplot("arthritis");  
     }
     init();
 
@@ -37,6 +37,7 @@ function getData (){
     bubblegraph(state,desease)
     bargraph1(state,desease);
     bargraph2(desease);
+    mapplot(desease)
     
 }
 
@@ -432,8 +433,119 @@ function bubblegraph(state,desease){
     }
     Plotly.newPlot("bubble", data3,layout3)
 }
+function mapplot(desease){
+
+    var total_cal=0;
+    var total_ny=0;
+    var total_tx=0;
+    var mean_state=[];
+    for(i=0;i<CA.length;i++){
+        if(desease=="arthritis"){
+            total_cal+=Number(CA[i].arthritis_crudeprev) 
+        }
+        else if(desease=="hb pressure"){
+            total_cal+=Number(CA[i].bphigh_crudeprev)
+        }
+        else if(desease=="cancer"){
+            total_cal+=Number(CA[i].cancer_crudeprev)
+        }
+        else if(desease=="asthma"){
+            total_cal+=Number(CA[i].casthma_crudeprev)
+        }
+        else if(desease=="smoking"){
+            total_cal+=Number(CA[i].csmoking_crudeprev)
+        }
+        else if(desease=="diabetes"){
+            total_cal+=Number(CA[i].diabetes_crudeprev)
+        }
+        else {
+            total_cal+=Number(CA[i].obesity_crudeprev)
+        }
+    }
+
+    for(i=0;i<NY.length;i++){
+        if(desease=="arthritis"){
+            total_ny+=Number(NY[i].arthritis_crudeprev)  
+        }
+        else if(desease=="hb pressure"){
+            total_ny+=Number(NY[i].bphigh_crudeprev)
+        }
+        else if(desease=="cancer"){
+            total_ny+=Number(NY[i].cancer_crudeprev)
+        }
+        else if(desease=="asthma"){
+            total_ny+=Number(NY[i].casthma_crudeprev)
+        }
+        else if(desease=="smoking"){
+            total_ny+=Number(NY[i].csmoking_crudeprev)
+        }
+        else if(desease=="diabetes"){
+            total_ny+=Number(NY[i].diabetes_crudeprev)
+        }
+        else {
+            total_ny+=Number(NY[i].obesity_crudeprev)
+        }
+    }
+
+    for(i=0;i<TX.length;i++){
+        if(desease=="arthritis"){
+            total_tx= total_tx + Number(TX[i].arthritis_crudeprev)
+        }
+        else if(desease=="hb pressure"){
+            total_tx= total_tx + Number(TX[i].bphigh_crudeprev)
+        }
+        else if(desease=="cancer"){
+            total_tx+=Number(TX[i].cancer_crudeprev)
+        }
+        else if(desease=="asthma"){
+            total_tx+=Number(TX[i].casthma_crudeprev)
+        }
+        else if(desease=="smoking"){
+            total_tx+=Number(TX[i].csmoking_crudeprev)
+        }
+        else if(desease=="diabetes"){
+            total_tx+=Number(TX[i].diabetes_crudeprev)
+        }
+        else {
+            total_tx+=Number(TX[i].obesity_crudeprev)
+        }
+    }
 
 
+    google.charts.load('current', {
+        'packages':['geochart'],
+    });
+    google.charts.setOnLoadCallback(drawRegionsMap);
 
-// console.log("NY:",NY);
-// console.log("TX:",TX);
+    function drawRegionsMap() {
+    var data = google.visualization.arrayToDataTable([
+        ['State', '% mean of desease'],
+        ['US-CA', total_cal/CA.length],
+        ['US-TX', total_ny/NY.length],
+        ['US-NY', total_tx/TX.length],
+
+    ]);
+
+    var options = {
+        region:'US',
+        displayMode:'states',
+        resolution:'provinces'
+    };
+
+    var chart = new google.visualization.GeoChart(document.getElementById('map'));
+
+    chart.draw(data, options);
+    }
+}
+
+
+// let myMap = L.map("map", {
+//     center: [45.52, -122.67],
+//     zoom: 13
+//   });
+  
+// // Adding a tile layer (the background map image) to our map:
+// // We use the addTo() method to add objects to our map.
+// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// }).addTo(myMap);
