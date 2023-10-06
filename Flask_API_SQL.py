@@ -1,3 +1,4 @@
+#Import the dependencies.
 import numpy as np
 
 import sqlalchemy
@@ -25,17 +26,22 @@ data_proyect = Base.classes.data
 #################################################
 app = Flask(__name__)
 
+#################################################
+# Flask Routes
+#################################################
+#with this route, we open directly our html file
 @app.route("/")
 def index():
     return render_template("index.html")
 
+#with this route, we load the data that we need to use to make the plot,maps, and tables.
 @app.route("/api/v1.0/diseases")
 def names():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    """Return a list of all passenger names"""
-    # Query all passengers
+    """Return a list with the information of the state that we selected"""
+    # Query all cities
    
     results = session.query(data_proyect.stateabbr,
                             data_proyect.placename,
@@ -48,7 +54,9 @@ def names():
                             data_proyect.obesity_crudeprev).all()
 
     session.close()
+    #with this we store the data with the new style (name of the columns)
     data_base=[]
+    #here we go fro every row extracting the information.
     for stateabbr,placename,arthritis,bphigh,cancer,asthma,smoking,diabetes,obesity in results:
         df={}
         df["State"]=stateabbr,

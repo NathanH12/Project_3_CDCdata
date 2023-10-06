@@ -1,11 +1,14 @@
 //url = "https://data.cdc.gov/resource/dxpw-cm5u.json?$query=SELECT%0A%20%20%60stateabbr%60%2C%0A%20%20%60placename%60%2C%0A%20%20%60placefips%60%2C%0A%20%20%60population2010%60%2C%0A%20%20%60arthritis_crudeprev%60%2C%0A%20%20%60arthritis_crude95ci%60%2C%0A%20%20%60arthritis_adjprev%60%2C%0A%20%20%60arthritis_adj95ci%60%2C%0A%20%20%60bphigh_crudeprev%60%2C%0A%20%20%60bphigh_crude95ci%60%2C%0A%20%20%60bphigh_adjprev%60%2C%0A%20%20%60bphigh_adj95ci%60%2C%0A%20%20%60cancer_crudeprev%60%2C%0A%20%20%60cancer_crude95ci%60%2C%0A%20%20%60cancer_adjprev%60%2C%0A%20%20%60cancer_adj95ci%60%2C%0A%20%20%60casthma_crudeprev%60%2C%0A%20%20%60casthma_crude95ci%60%2C%0A%20%20%60casthma_adjprev%60%2C%0A%20%20%60casthma_adj95ci%60%2C%0A%20%20%60csmoking_crude95ci%60%2C%0A%20%20%60csmoking_adjprev%60%2C%0A%20%20%60csmoking_adj95ci%60%2C%0A%20%20%60geolocation%60%2C%0A%20%20%60csmoking_crudeprev%60%0AWHERE%20caseless_one_of(%60stateabbr%60%2C%20%22CA%22%2C%20%22TX%22%2C%20%22NY%22)";
 //const url = "https://data.cdc.gov/resource/dxpw-cm5u.json?$query=SELECT%0A%20%20%60stateabbr%60%2C%0A%20%20%60placename%60%2C%0A%20%20%60placefips%60%2C%0A%20%20%60population2010%60%2C%0A%20%20%60arthritis_crudeprev%60%2C%0A%20%20%60arthritis_crude95ci%60%2C%0A%20%20%60cancer_crudeprev%60%2C%0A%20%20%60cancer_crude95ci%60%2C%0A%20%20%60casthma_crudeprev%60%2C%0A%20%20%60casthma_crude95ci%60%2C%0A%20%20%60csmoking_crudeprev%60%2C%0A%20%20%60csmoking_crude95ci%60%2C%0A%20%20%60diabetes_crudeprev%60%2C%0A%20%20%60diabetes_crude95ci%60%2C%0A%20%20%60obesity_crudeprev%60%2C%0A%20%20%60obesity_crude95ci%60%2C%0A%20%20%60geolocation%60%2C%0A%20%20%60bphigh_crudeprev%60%2C%0A%20%20%60bphigh_crude95ci%60%0AWHERE%20caseless_one_of(%60stateabbr%60%2C%20%22CA%22%2C%20%22NY%22%2C%20%22TX%22)"
+// this is the connection with the database through Python Flask API
 const url = '/api/v1.0/diseases'
 
+// i create this three array to store the information of every state and works in the differents function that we used.
 var CA=[];
 var NY=[];
 var TX=[];
 
+//with this, i store the data the ever array and call the plots to start with the html.
 d3.json(url).then((data)=>{
     console.log(data[0].State[0])
     for (i=0;i<data.length;i++){
@@ -30,8 +33,10 @@ d3.json(url).then((data)=>{
     init();
 });
 
+// with this, i select the state and the city that i want to see in the html.
 d3.selectAll("#selDataset,#selDataset_des").on("change",getData)    
 
+// with this function i change the information for every plot and table.
 function getData (){
     state=d3.select("#selDataset").property("value");
     disease=d3.select("#selDataset_des").property("value");
@@ -45,6 +50,7 @@ function getData (){
     
 }
 
+// this function is to plot the first bar graph that shows the worst 5 cities of the state that we select depending of the disease that you select.
 function bargraph1(state,disease){
     var value=[];
     var city=[];
@@ -222,6 +228,7 @@ function bargraph1(state,disease){
     Plotly.newPlot("bar1",data1,layout);
 }
 
+// this function is to plot the second bar graph that shows the mean of the people that have the disease per state.
 function bargraph2(disease){
     var total_cal=0;
     var total_ny=0;
@@ -319,6 +326,7 @@ function bargraph2(disease){
     Plotly.newPlot("bar2",data2,layout2);
 }
 
+// this function is to plot the bubble graph that show every city of the state that we select with a popup that show the % of peopel that have the disease.
 function bubblegraph(state,disease){
     let values =[];
     let cities =[];
@@ -442,6 +450,7 @@ function bubblegraph(state,disease){
     Plotly.newPlot("bubble", data3,layout3)
 }
 
+// this function plot a map of USA and paint every state on the project with a color depending of the mean of the % of people with the disease that we select.
 function mapplot(disease){
 
     var total_cal=0;
@@ -546,6 +555,7 @@ function mapplot(disease){
     }
 }
 
+// this function add the information of the state in the table.
 function panel1(state){
     var total_art =0;
     var total_bp=0;
@@ -602,4 +612,5 @@ function panel1(state){
     d3.select(".panel-body").append("p").text(`Obesity: ${(total_obes/total_cities).toFixed(3)}`);
 }
 
+//with this part of the code, we can change the background of the html.
 document.body.style.backgroundColor = "white";
