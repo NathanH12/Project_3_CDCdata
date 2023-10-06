@@ -5,20 +5,20 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 #################################################
 # Database Setup
 #################################################
-engine = create_engine("sqlite:///database2.csv")
-
+engine = create_engine("sqlite:///database.sqlite")
+#i need to find the way to create a sqlite file that connect with SQL database
 # reflect an existing database into a new model
 Base = automap_base()
 # reflect the tables
 Base.prepare(autoload_with=engine)
 
-# Save reference to the table
-Passenger = Base.classes.passenger
+# Save reference to the table "name of the table=database"
+data_proyect = Base.classes.data
 
 #################################################
 # Flask Setup
@@ -26,13 +26,8 @@ Passenger = Base.classes.passenger
 app = Flask(__name__)
 
 @app.route("/")
-def welcome():
-    """List all available api routes."""
-    return (
-        f"Available Routes:<br/>"
-        f"/api/v1.0/diseases<br/>"
-
-    )
+def index():
+    return render_template("index.html")
 
 @app.route("/api/v1.0/diseases")
 def names():
@@ -41,11 +36,36 @@ def names():
 
     """Return a list of all passenger names"""
     # Query all passengers
-    results = session.query(Passenger.name).all()
+   
+    results = session.query(data_proyect.stateabbr,
+                            data_proyect.placename,
+                            data_proyect.arthritis_crudeprev,
+                            data_proyect.bphigh_crudeprev,
+                            data_proyect.cancer_crudeprev,
+                            data_proyect.casthma_crudeprev,
+                            data_proyect.csmoking_crudeprev,
+                            data_proyect.diabetes_crudeprev,
+                            data_proyect.obesity_crudeprev).all()
 
     session.close()
+    data_base=[]
+    for stateabbr,placename,arthritis,bphigh,cancer,asthma,smoking,diabetes,obesity in results:
+        df={}
+        df["State"]=stateabbr,
+        df["City"]=placename,
+        df["Arthritis"]=arthritis,
+        df["BPHigh"]=bphigh,
+        df["Cancer"]=cancer,
+        df["Asthma"]=asthma,
+        df["Smoking"]=smoking,
+        df["Diabetes"]=diabetes,
+        df["Obesity"]=obesity,
+        data_base.append(df)
 
     # Convert list of tuples into normal list
-    all_names = list(np.ravel(results))
+    
 
-    return jsonify(all_names)
+    return jsonify(data_base)
+
+if __name__ == '__main__':
+    app.run(debug=True)
